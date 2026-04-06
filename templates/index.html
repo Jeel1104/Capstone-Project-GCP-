@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AAYAM 2026 — Karnavati University Events</title>
+
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  FAVICON / BROWSER TAB ICON                                  ║
+  ║  1. Save your AAYAM logo as  "favicon.png"                   ║
+  ║  2. Place it inside the  /static/  folder                    ║
+  ║  3. The browser tab will show it automatically               ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<link rel="icon" href="/static/favicon.png" type="image/png" />
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+
+<style>
+/* ═══════════════════════════════════════
+   THEME — LIGHT & DARK
+═══════════════════════════════════════ */
+:root {
+  --ink: #0f0e0d;
+  --paper: #f5f2ec;
+  --cream: #ede9e0;
+  --accent: #d4521a;
+  --accent2: #1a6dd4;
+  --gold: #c9a227;
+  --muted: #7a7469;
+  --card-bg: #ffffff;
+  --border: rgba(15,14,13,0.12);
+  --header-bg: rgba(245,242,236,0.92);
+  --radius: 16px;
+  --radius-sm: 8px;
+}
+[data-theme="dark"] {
+  --ink: #f0ede8;
+  --paper: #161412;
+  --cream: #1e1c19;
+  --accent: #e8693a;
+  --accent2: #4d9fec;
+  --gold: #e0b83a;
+  --muted: #8a8278;
+  --card-bg: #1e1c19;
+  --border: rgba(240,237,232,0.1);
+  --header-bg: rgba(22,20,18,0.92);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--paper); color: var(--ink);
+  min-height: 100vh; overflow-x: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ── SPLASH ── */
+#splash {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #0f0e0d;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 1.5rem;
+  transition: opacity 0.7s, visibility 0.7s;
+}
+#splash.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.splash-inner { display: flex; flex-direction: column; align-items: center; gap: 0rem; }
+
+/*
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  SPLASH SCREEN — KARNAVATI UNIVERSITY LOGO                   ║
+  ║  1. Save your KU logo (white version) as  "ku-logo.png"      ║
+  ║  2. Place it inside  /static/                                ║
+  ║  3. Uncomment the <img> tag in the HTML below (search for    ║
+  ║     "UNCOMMENT KU SPLASH")                                   ║
+  ║  4. Delete the placeholder div below the comment             ║
+  ╚══════════════════════════════════════════════════════════════╝
+*/
+.splash-ku { width: 150px; height: 150px; object-fit: contain; }
+.splash-ku-placeholder {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.18);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.62rem; color: rgba(255,255,255,0.35); text-align: center; padding: 8px;
+}
+.splash-title {
+  font-family: 'Syne', sans-serif; font-size: 3.2rem; font-weight: 800;
+  color: #fff; letter-spacing: -0.05em;
+}
+.splash-sub { font-size: 0.78rem; color: rgba(255,255,255,0.4); letter-spacing: 0.12em; text-transform: uppercase; }
+.splash-bar { width: 140px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 100px; overflow: hidden; }
+.splash-bar-fill { height: 100%; background: #d4521a; border-radius: 100px; animation: sload 2s ease forwards; }
+@keyframes sload { from { width: 0; } to { width: 100%; } }
+
+/* ── HEADER ── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--header-bg); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 clamp(1.5rem, 5vw, 4rem);
+  display: flex; align-items: center; justify-content: space-between;
+  height: 68px; transition: background 0.3s;
+}
+.header-left { display: flex; align-items: center; gap: 14px; }
+
+/*
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  HEADER — AAYAM WEBSITE LOGO                                 ║
+  ║  1. Save your AAYAM logo as  "aayam-logo.png"                ║
+  ║  2. Place it inside  /static/                                ║
+  ║  3. Uncomment the <img> in the HTML (search "UNCOMMENT AAYAM LOGO") ║
+  ║  4. Delete the orange dot placeholder span                   ║
+  ╚══════════════════════════════════════════════════════════════╝
+*/
+.aayam-logo-img { height: 55px; width: auto; object-fit: contain; }
+
+/*
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  HEADER — KARNAVATI UNIVERSITY LOGO (right side)             ║
+  ║  1. Save your KU colour logo as  "ku-logo-color.png"         ║
+  ║  2. Place it inside  /static/                                ║
+  ║  3. Uncomment the <img> in the HTML (search "UNCOMMENT KU HEADER") ║
+  ╚══════════════════════════════════════════════════════════════╝
+*/
+.ku-header-logo { height: 38px; width: auto; object-fit: contain; }
+
+.logo {
+  font-family: 'Syne', sans-serif; font-size: 1.35rem; font-weight: 800;
+  letter-spacing: -0.04em; color: var(--ink); text-decoration: none;
+  display: flex; align-items: center; gap: 10px;
+}
+.logo-accent { color: var(--accent); }
+.ku-wrap { display: flex; align-items: center; gap: 8px; }
+.ku-label { font-size: 0.7rem; font-weight: 600; color: var(--muted); line-height: 1.3; text-align: right; max-width: 110px; }
+nav { display: flex; align-items: center; gap: 18px; }
+nav a { font-size: 0.875rem; color: var(--muted); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+nav a:hover { color: var(--ink); }
+.nav-cta { background: var(--ink); color: var(--paper) !important; padding: 8px 20px; border-radius: 100px; transition: background 0.2s !important; font-size: 0.85rem; }
+.nav-cta:hover { background: var(--accent) !important; }
+.theme-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--cream); border: 1px solid var(--border);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; transition: background 0.2s, transform 0.25s; flex-shrink: 0;
+}
+.theme-btn:hover { background: var(--cream); transform: rotate(25deg); }
+
+/* ── HERO ── */
+.hero {
+  padding: clamp(4rem, 10vw, 8rem) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+  max-width: 1200px; margin: 0 auto;
+}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: 100px; padding: 5px 14px;
+  font-size: 0.75rem; font-weight: 500; color: var(--muted);
+  margin-bottom: 1.5rem; animation: fadeUp 0.6s ease both;
+}
+.hero-tag span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+h1 {
+  font-family: 'Syne', sans-serif; font-size: clamp(2.8rem, 5vw, 4.2rem);
+  font-weight: 800; line-height: 1.05; letter-spacing: -0.04em; color: var(--ink);
+  animation: fadeUp 0.6s 0.1s ease both;
+}
+h1 em { font-style: normal; color: var(--accent); }
+.hero-sub { margin-top: 1.25rem; font-size: 1.05rem; color: var(--muted); line-height: 1.7; max-width: 480px; animation: fadeUp 0.6s 0.2s ease both; }
+.ku-name { font-weight: 600; color: var(--accent2); }
+.hero-actions { margin-top: 2rem; display: flex; gap: 12px; flex-wrap: wrap; animation: fadeUp 0.6s 0.3s ease both; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 26px; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; cursor: pointer; border: none; text-decoration: none; transition: all 0.2s; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: #b8431a; transform: translateY(-1px); }
+.btn-outline { background: transparent; color: var(--ink); border: 1.5px solid var(--border); }
+.btn-outline:hover { border-color: var(--ink); background: var(--cream); }
+.hero-stats { display: flex; gap: 2rem; margin-top: 2.5rem; animation: fadeUp 0.6s 0.4s ease both; }
+.stat-num { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--ink); }
+.stat-lbl { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+.hero-visual { position: relative; display: flex; justify-content: center; animation: fadeUp 0.6s 0.2s ease both; }
+.event-preview { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; width: 320px; box-shadow: 0 8px 32px rgba(15,14,13,0.06); }
+.preview-tag { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 0.75rem; }
+.preview-title { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+.preview-date { font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem; }
+.preview-bar { height: 4px; background: var(--cream); border-radius: 100px; overflow: hidden; }
+.preview-fill { height: 100%; background: var(--accent); border-radius: 100px; width: 73%; }
+.preview-meta { display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.75rem; color: var(--muted); }
+.preview-avatars { display: flex; margin-top: 1rem; }
+.avatar { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--card-bg); margin-right: -8px; font-size: 0.65rem; font-weight: 600; display: flex; align-items: center; justify-content: center; color: #fff; }
+.floating-badge { position: absolute; top: -16px; right: -24px; background: var(--ink); color: var(--paper); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 0.75rem; font-weight: 500; box-shadow: 0 4px 16px rgba(15,14,13,0.2); animation: float 3s ease-in-out infinite; }
+.floating-badge2 { position: absolute; bottom: -20px; left: -20px; background: var(--gold); color: #fff; border-radius: var(--radius-sm); padding: 10px 14px; font-size: 0.75rem; font-weight: 500; animation: float 3s 1.5s ease-in-out infinite; }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+/* ── EVENTS ── */
+.events-section { max-width: 1200px; margin: 0 auto; padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem); }
+.section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 2rem; gap: 1rem; flex-wrap: wrap; }
+.section-eyebrow { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.5rem; }
+.section-title { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 700; letter-spacing: -0.03em; }
+.filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.pill { padding: 6px 16px; border-radius: 100px; font-size: 0.8rem; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--muted); transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+.pill.active, .pill:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.events-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
+.event-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+.event-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(15,14,13,0.12); }
+.event-thumb { height: 165px; display: flex; align-items: center; justify-content: center; font-size: 3rem; position: relative; overflow: hidden; }
+.event-thumb img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+/*
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  EVENT POSTER IMAGES                                         ║
+  ║  1. Save poster images inside  /static/events/              ║
+  ║     e.g.  /static/events/techfest.jpg                        ║
+  ║  2. In the JS events array below, set the  "img"  field:     ║
+  ║     img: '/static/events/techfest.jpg'                       ║
+  ║  3. Leave  img: ''  to show the emoji icon as fallback       ║
+  ╚══════════════════════════════════════════════════════════════╝
+*/
+.event-thumb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.2)); z-index: 1; }
+.event-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
+.event-category { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.event-name { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+.event-info { font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem; line-height: 1.6; }
+.event-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); }
+.event-seats { font-size: 0.78rem; color: var(--muted); }
+.register-btn { background: var(--ink); color: var(--paper); border: none; padding: 8px 18px; border-radius: 100px; font-size: 0.8rem; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; }
+.register-btn:hover { background: var(--accent); }
+
+/* ── GALLERY ── */
+.gallery-section { max-width: 1200px; margin: 0 auto; padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem); border-top: 1px solid var(--border); }
+.gallery-header-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+.gallery-note { font-size: 0.78rem; color: var(--muted); background: var(--cream); border-radius: var(--radius-sm); padding: 8px 14px; margin-bottom: 1.25rem; border-left: 3px solid var(--accent2); }
+.gallery-tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+.gtab { padding: 7px 20px; border-radius: 100px; font-size: 0.82rem; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--muted); transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+.gtab.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.photo-grid { display: none; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.photo-grid.active { display: grid; }
+.video-grid { display: none; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.video-grid.active { display: grid; }
+.photo-item { aspect-ratio: 4/3; border-radius: var(--radius-sm); overflow: hidden; position: relative; background: var(--cream); cursor: pointer; transition: transform 0.2s; }
+.photo-item:hover { transform: scale(1.02); }
+.photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo-caption { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.5); color: #fff; font-size: 0.75rem; padding: 8px 10px; transform: translateY(100%); transition: transform 0.2s; }
+.photo-item:hover .photo-caption { transform: translateY(0); }
+.video-item { border-radius: var(--radius-sm); overflow: hidden; background: var(--cream); border: 1px solid var(--border); }
+.video-thumb { aspect-ratio: 16/9; background: #111; position: relative; overflow: hidden; }
+.video-thumb video { width: 100%; height: 100%; object-fit: cover; display: block; }
+/*
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  GALLERY — HOW TO ADD PHOTOS & VIDEOS                       ║
+  ║                                                              ║
+  ║  PHOTOS:                                                     ║
+  ║  → Admin panel → enter /static/gallery/photos/file.jpg      ║
+  ║  → Or add to photoItems[] array in the <script> below       ║
+  ║                                                              ║
+  ║  VIDEOS:                                                     ║
+  ║  → Admin panel → enter /static/gallery/videos/file.mp4      ║
+  ║  → Place .mp4 files in /static/gallery/videos/              ║
+  ║  → Optional thumbnail: /static/gallery/thumbs/thumb.jpg     ║
+  ║                                                              ║
+  ║  Admin password: aayam2026  (change in app.py)              ║
+  ╚══════════════════════════════════════════════════════════════╝
+*/
+.video-info { padding: 0.75rem 1rem; }
+.video-title { font-size: 0.875rem; font-weight: 600; color: var(--ink); }
+.video-meta { font-size: 0.72rem; color: var(--muted); margin-top: 3px; }
+.gallery-admin-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 7px 16px; border-radius: 100px; font-size: 0.78rem; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+.gallery-admin-btn:hover { background: var(--cream); color: var(--ink); }
+.lightbox { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.92); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+.lightbox.open { opacity: 1; pointer-events: all; }
+.lightbox img { max-width: 90vw; max-height: 85vh; object-fit: contain; border-radius: 8px; }
+.lightbox-close { position: absolute; top: 1.5rem; right: 1.5rem; background: rgba(255,255,255,0.15); border: none; color: #fff; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+
+/* ── ADMIN MODAL ── */
+.admin-modal-overlay { position: fixed; inset: 0; z-index: 600; background: rgba(0,0,0,0.72); display: flex; align-items: center; justify-content: center; padding: 1.5rem; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.admin-modal-overlay.open { opacity: 1; pointer-events: all; }
+.admin-modal { background: var(--paper); border-radius: var(--radius); width: 100%; max-width: 450px; padding: 2rem; position: relative; transform: translateY(20px); transition: transform 0.2s; max-height: 90vh; overflow-y: auto; }
+.admin-modal-overlay.open .admin-modal { transform: translateY(0); }
+.admin-sec { display: none; }
+.admin-sec.active { display: block; }
+.admin-title { font-family: 'Syne', sans-serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 0.4rem; }
+.admin-sub { font-size: 0.82rem; color: var(--muted); margin-bottom: 1.25rem; line-height: 1.5; }
+.admin-err { font-size: 0.8rem; color: #c0304a; margin-bottom: 10px; display: none; }
+.admin-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; font-family: 'DM Sans', sans-serif; background: var(--card-bg); color: var(--ink); outline: none; transition: border-color 0.2s; margin-bottom: 10px; }
+.admin-input:focus { border-color: var(--accent); }
+.admin-btn { width: 100%; padding: 11px; background: var(--accent); color: #fff; border: none; border-radius: 100px; font-size: 0.9rem; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; }
+.admin-btn:hover { background: #b8431a; }
+.admin-tabs { display: flex; gap: 8px; margin-bottom: 1.25rem; }
+.admin-tab { padding: 5px 14px; border-radius: 100px; font-size: 0.78rem; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--muted); transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+.admin-tab.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.admin-list-item { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 0.8rem; color: var(--ink); }
+.admin-remove { background: none; border: none; color: #c0304a; cursor: pointer; font-size: 0.78rem; font-weight: 500; font-family: 'DM Sans', sans-serif; }
+.admin-label { font-size: 0.8rem; font-weight: 500; color: var(--ink); display: block; margin-bottom: 5px; }
+
+/* ── COMMENTS ── */
+.comments-section { max-width: 1200px; margin: 0 auto; padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem); border-top: 1px solid var(--border); }
+.comment-form-wrap { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; margin-bottom: 2rem; }
+.cform-label { font-size: 0.8rem; font-weight: 500; color: var(--ink); display: block; margin-bottom: 5px; }
+.cform-input, .cform-textarea { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.9rem; font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); outline: none; transition: border-color 0.2s; margin-bottom: 12px; }
+.cform-input:focus, .cform-textarea:focus { border-color: var(--accent); }
+.cform-textarea { resize: vertical; min-height: 88px; }
+.cform-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.cform-submit { background: var(--accent); color: #fff; border: none; padding: 11px 28px; border-radius: 100px; font-size: 0.9rem; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; }
+.cform-submit:hover { background: #b8431a; }
+.flash-success { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.875rem; font-weight: 500; margin-bottom: 1rem; }
+.flash-error { background: #fdecea; color: #b71c1c; border: 1px solid #f5c6c6; border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.875rem; font-weight: 500; margin-bottom: 1rem; }
+.comments-list { display: flex; flex-direction: column; gap: 14px; }
+.comment-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1.1rem 1.25rem; animation: fadeUp 0.4s ease both; }
+.comment-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.comment-avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 600; color: #fff; flex-shrink: 0; }
+.comment-name { font-size: 0.875rem; font-weight: 600; color: var(--ink); }
+.comment-event { font-size: 0.72rem; color: var(--accent); font-weight: 500; }
+.comment-time { font-size: 0.72rem; color: var(--muted); margin-left: auto; }
+.comment-text { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+/* ── MODAL ── */
+.modal-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(15,14,13,0.6); display: flex; align-items: center; justify-content: center; padding: 1.5rem; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal { background: var(--paper); border-radius: var(--radius); width: 100%; max-width: 480px; padding: 2rem; position: relative; transform: translateY(24px); transition: transform 0.25s; max-height: 90vh; overflow-y: auto; }
+.modal-overlay.open .modal { transform: translateY(0); }
+.modal-close { position: absolute; top: 1rem; right: 1rem; width: 32px; height: 32px; border-radius: 50%; background: var(--cream); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--muted); transition: background 0.2s; }
+.modal-close:hover { background: var(--border); color: var(--ink); }
+.modal-event-tag { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.modal-title { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+.modal-desc { font-size: 0.875rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.6; }
+.form-group { margin-bottom: 1.1rem; }
+.form-group label { display: block; font-size: 0.8rem; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.9rem; font-family: 'DM Sans', sans-serif; background: var(--card-bg); color: var(--ink); outline: none; transition: border-color 0.2s; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.submit-btn { width: 100%; padding: 13px; background: var(--accent); color: #fff; border: none; border-radius: 100px; font-size: 0.95rem; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s, transform 0.15s; margin-top: 0.5rem; }
+.submit-btn:hover { background: #b8431a; transform: translateY(-1px); }
+.submit-btn:active { transform: translateY(0); }
+.success-screen { text-align: center; padding: 1rem 0; display: none; }
+.success-icon { width: 72px; height: 72px; border-radius: 50%; background: #e8f5e9; margin: 0 auto 1.25rem; display: flex; align-items: center; justify-content: center; font-size: 2rem; animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+@keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.success-title { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; }
+.success-sub { font-size: 0.875rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.5rem; }
+.reg-card { background: var(--cream); border-radius: var(--radius-sm); padding: 1rem 1.25rem; text-align: left; margin-bottom: 1.25rem; }
+.reg-card-row { display: flex; justify-content: space-between; font-size: 0.8rem; padding: 4px 0; }
+.reg-card-row span:first-child { color: var(--muted); }
+.reg-card-row span:last-child { font-weight: 500; color: var(--ink); }
+.reg-id { font-weight: 600; color: var(--accent); font-size: 0.85rem; letter-spacing: 0.05em; }
+.close-btn { width: 100%; padding: 12px; background: var(--ink); color: var(--paper); border: none; border-radius: 100px; font-size: 0.9rem; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; }
+.close-btn:hover { background: var(--accent); }
+
+/* ── FOOTER ── */
+footer { border-top: 1px solid var(--border); padding: 2rem clamp(1.5rem, 5vw, 4rem); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; color: var(--muted); font-size: 0.8rem; background: var(--cream); transition: background 0.3s; }
+.footer-logo { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--accent); }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a { color: var(--muted); text-decoration: none; transition: color 0.2s; font-size: 0.8rem; }
+.footer-links a:hover { color: var(--ink); }
+
+/* ── ANIMATIONS & RESPONSIVE ── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.card-anim { animation: fadeUp 0.5s ease both; }
+@media (max-width: 768px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  .nav-hidden { display: none; }
+  .form-row, .cform-row { grid-template-columns: 1fr; }
+  .photo-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════
+     SPLASH SCREEN
+═══════════════════════════════════ -->
+<div id="splash">
+  <div class="splash-inner">
+
+    <!-- UNCOMMENT KU SPLASH: Remove the placeholder div below and uncomment this img tag -->
+    <!-- after saving your KU logo as /static/ku-logo.png (use the white version)        -->
+    <img class="splash-ku" src="/static/ku-logo_loading.png" alt="Karnavati University" />
+
+   
+    <div class="splash-title">AAYAM</div>
+    <div class="splash-sub">Karnavati University &middot; Events 2026</div>
+  </div>
+  <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+</div>
+
+<!-- ═══════════════════════════════════
+     HEADER
+═══════════════════════════════════ -->
+<header>
+  <div class="header-left">
+    <a class="logo" href="#">
+
+      <!-- UNCOMMENT AAYAM LOGO: Remove the orange dot span and uncomment this img tag   -->
+      <!-- after saving your AAYAM logo as /static/aayam-logo.png                        -->
+      <img class="aayam-logo-img" src="/static/aayam.png" /> 
+
+      <!-- DELETE THIS SPAN after adding the AAYAM logo image above -->
+      
+
+      <span>AAYAM<span class="logo-accent"></span></span>
+    </a>
+  </div>
+
+  <nav>
+    <a href="#events" class="nav-hidden">Events</a>
+    <a href="#gallery" class="nav-hidden">Gallery</a>
+    <a href="#comments" class="nav-hidden">Feedback</a>
+
+    <!-- KU Logo (right of nav) -->
+    <div class="ku-wrap nav-hidden">
+      <!-- UNCOMMENT KU HEADER: Remove ku-label div and uncomment the img after adding the file -->
+      <!-- <img class="ku-header-logo" src="/static/ku-logo-color.png" alt="Karnavati University" /> -->
+
+      <!-- DELETE THIS DIV after adding the KU header logo image above -->
+      <div class="ku-label">Karnavati<br>University</div>
+    </div>
+
+    <!-- LIGHT / DARK THEME TOGGLE BUTTON -->
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Switch theme">🌙</button>
+
+    <a href="#events" class="btn nav-cta">Register Now</a>
+  </nav>
+</header>
+
+<!-- ═══════════════════════════════════
+     HERO
+═══════════════════════════════════ -->
+<section>
+  <div class="hero">
+    <div>
+      <div class="hero-tag"><span></span> 2026 Semester Events — Now Open</div>
+      <h1>Your Campus.<br><em>Your Events.</em><br>Simplified.</h1>
+      <p class="hero-sub">
+        The official event portal of <span class="ku-name">Karnavati University</span>.
+        Register for Tech Fests, Cultural Nights, and Workshops — all in one place.
+        No login required. Just show up and make memories.
+      </p>
+      <div class="hero-actions">
+        <a href="#events" class="btn btn-primary">Browse Events →</a>
+        <a href="#gallery" class="btn btn-outline">Photo Gallery</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-num">12+</div><div class="stat-lbl">Events this term</div></div>
+        <div><div class="stat-num">2.4k</div><div class="stat-lbl">Registrations</div></div>
+        <div><div class="stat-num">100%</div><div class="stat-lbl">Free to join</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="event-preview">
+        <div class="preview-tag">🔥 Trending</div>
+        <div class="preview-title">Tech Fest 2026</div>
+        <div class="preview-date">📅 March 15 &middot; Main Auditorium</div>
+        <div class="preview-bar"><div class="preview-fill"></div></div>
+        <div class="preview-meta"><span>73% seats filled</span><span>54 seats left</span></div>
+        <div class="preview-avatars">
+          <div class="avatar" style="background:#d4521a">AK</div>
+          <div class="avatar" style="background:#1a6dd4">SR</div>
+          <div class="avatar" style="background:#c9a227">PM</div>
+          <div class="avatar" style="background:#2a9d2a">+47</div>
+        </div>
+      </div>
+      <div class="floating-badge">&#10003; Registered successfully!</div>
+      <div class="floating-badge2">&#127881; New: Art Workshop</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     EVENTS
+═══════════════════════════════════ -->
+<section class="events-section" id="events">
+  <div class="section-header">
+    <div>
+      <div class="section-eyebrow">All Events &middot; 2026</div>
+      <div class="section-title">What's happening on campus</div>
+    </div>
+    <div class="filter-pills">
+      <button class="pill active" onclick="filterEvents('all',this)">All</button>
+      <button class="pill" onclick="filterEvents('tech',this)">Tech</button>
+      <button class="pill" onclick="filterEvents('cultural',this)">Cultural</button>
+      <button class="pill" onclick="filterEvents('workshop',this)">Workshops</button>
+    </div>
+  </div>
+  <div class="events-grid" id="eventsGrid"></div>
+</section>
+
+<!-- ═══════════════════════════════════
+     GALLERY (View-only for students)
+═══════════════════════════════════ -->
+<section class="gallery-section" id="gallery">
+  <div class="gallery-header-row">
+    <div>
+      <div class="section-eyebrow">Campus Memories</div>
+      <div class="section-title">Photo &amp; Video Gallery</div>
+    </div>
+    <!-- Admin panel button — password protected, students cannot add content -->
+    <button class="gallery-admin-btn" onclick="openAdminModal()">&#128274; Admin Panel</button>
+  </div>
+
+  <div class="gallery-note">
+    &#128065; Students can view all photos and videos here.
+    Content is managed exclusively by the AAYAM admin team.
+  </div>
+
+  <div class="gallery-tabs">
+    <button class="gtab active" onclick="switchGTab('photos',this)">&#128247; Photos</button>
+    <button class="gtab" onclick="switchGTab('videos',this)">&#127909; Videos</button>
+  </div>
+
+  <div class="photo-grid active" id="photoGrid"></div>
+  <div class="video-grid" id="videoGrid"></div>
+</section>
+
+<!-- ═══════════════════════════════════
+     COMMENTS — connected to Flask backend
+═══════════════════════════════════ -->
+<section class="comments-section" id="comments">
+  <div class="section-header" style="margin-bottom:1.5rem;">
+    <div>
+      <div class="section-eyebrow">Student Voices</div>
+      <div class="section-title">Share your feedback</div>
+    </div>
+  </div>
+
+  <!--
+    Flask Jinja2 — these variables are passed from render_template() in app.py.
+    comment_success and comment_error are set after form submission.
+  -->
+  {% if comment_success %}
+    <div class="flash-success">{{ comment_success }}</div>
+  {% endif %}
+  {% if comment_error %}
+    <div class="flash-error">{{ comment_error }}</div>
+  {% endif %}
+
+  <!-- Comment form — POSTs to Flask /comment route, saved to comments.csv -->
+  <div class="comment-form-wrap">
+  <form action="/comment" method="POST">
+
+  <div class="cform-row">
+    <div>
+      <label class="cform-label">Full Name</label>
+      <input class="cform-input" type="text" name="name" placeholder="Enter your name" required>
+    </div>
+
+    <div>
+      <label class="cform-label">Email</label>
+      <input class="cform-input" type="email" name="email" placeholder="Enter your email" required>
+    </div>
+  </div>
+
+  <label class="cform-label">Your Comment</label>
+  <textarea class="cform-textarea" name="comment" placeholder="Write your feedback..." required></textarea>
+
+  <button class="cform-submit" type="submit">Submit Feedback</button>
+  </form>
+  </div>
+
+  <!-- Comments list rendered by Jinja2 from Flask (read from comments.csv) -->
+  <div class="comments-list">
+    {% if comments %}
+      {% for c in comments %}
+      <div class="comment-card">
+        <div class="comment-header">
+          <div class="comment-avatar" style="background:hsl({{ (loop.index * 53) % 360 }},55%,48%)">
+            {{ c.name[0].upper() if c.name else '?' }}
+          </div>
+          <div>
+            <div class="comment-name">{{ c.name }}</div>
+            {% if c.event %}<div class="comment-event">{{ c.event }}</div>{% endif %}
+          </div>
+          <div class="comment-time">{{ c.timestamp }}</div>
+        </div>
+        <div class="comment-text">{{ c.text }}</div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div style="text-align:center;color:var(--muted);font-size:0.875rem;padding:2.5rem 0;">
+        No comments yet. Be the first to share your feedback!
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     REGISTRATION MODAL
+═══════════════════════════════════ -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect()">&#x2715;</button>
+    <div id="formSection">
+      <div class="modal-event-tag" id="modalTag"></div>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" placeholder="e.g. Arjun" />
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" placeholder="e.g. Mehta" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">College Email</label>
+        <input type="email" id="email" placeholder="you@karnavati.edu.in" />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="rollno">Roll Number</label>
+          <input type="text" id="rollno" placeholder="e.g. KU2024045" />
+        </div>
+        <div class="form-group">
+          <label for="year">Year of Study</label>
+          <select id="year">
+            <option value="">Select year</option>
+            <option>1st Year</option><option>2nd Year</option>
+            <option>3rd Year</option><option>4th Year</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="+91 98765 43210" />
+      </div>
+      <div class="form-group">
+        <label for="eventField">Event Name</label>
+        <input type="text" id="eventField" readonly style="background:var(--cream);cursor:not-allowed;" />
+      </div>
+      <div class="form-group">
+        <label for="notes">Anything you'd like us to know? (optional)</label>
+        <textarea id="notes" rows="2" placeholder="Dietary preferences, accessibility needs…"></textarea>
+      </div>
+      <button class="submit-btn" onclick="submitForm()">Confirm Registration &#8594;</button>
+    </div>
+    <div class="success-screen" id="successSection">
+      <div class="success-icon">&#127881;</div>
+      <div class="success-title">You're in!</div>
+      <div class="success-sub">Your spot is confirmed for AAYAM 2026. Check your college email for details.</div>
+      <div class="reg-card" id="regCard"></div>
+      <button class="close-btn" onclick="closeModalDirect()">Back to Events</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     ADMIN GALLERY MODAL (Password protected)
+═══════════════════════════════════ -->
+<div class="admin-modal-overlay" id="adminOverlay" onclick="closeAdminModal(event)">
+  <div class="admin-modal">
+    <button class="modal-close" onclick="closeAdminModalDirect()" style="position:absolute;top:1rem;right:1rem;">&#x2715;</button>
+
+    <!-- Step 1: Login -->
+    <div class="admin-sec active" id="adminLogin">
+      <div class="admin-title">&#128274; Admin Access</div>
+      <div class="admin-sub">Enter the admin password to manage gallery content.<br>Students can only view photos and videos.</div>
+      <div class="admin-err" id="adminErr">Incorrect password. Please try again.</div>
+      <input class="admin-input" type="password" id="adminPass" placeholder="Enter admin password"
+             onkeydown="if(event.key==='Enter')checkPass()" />
+      <button class="admin-btn" onclick="checkPass()">Login &#8594;</button>
+      <p style="font-size:0.72rem;color:var(--muted);margin-top:12px;text-align:center;">
+        Default password: <strong>aayam2026</strong> &mdash; Change in app.py
+      </p>
+    </div>
+
+    <!-- Step 2: Admin Panel (shown after login) -->
+    <div class="admin-sec" id="adminPanel">
+      <div class="admin-title">Gallery Manager</div>
+      <div class="admin-sub">Add or remove content. Students see everything you add here.</div>
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="switchAdminTab('photos',this)">Photos</button>
+        <button class="admin-tab" onclick="switchAdminTab('videos',this)">Videos</button>
+      </div>
+
+      <!-- Photo Management -->
+      <div id="aPhotoTab">
+        <label class="admin-label">Caption</label>
+        <input class="admin-input" id="nCaption" type="text" placeholder="e.g. Tech Fest Opening Ceremony" />
+        <label class="admin-label">
+          Image path
+          <!-- Save to /static/gallery/photos/filename.jpg and enter path here -->
+        </label>
+        <input class="admin-input" id="nPhotoSrc" type="text" placeholder="/static/gallery/photos/image.jpg" />
+        <button class="admin-btn" onclick="addPhoto()" style="margin-bottom:1rem;">Add Photo</button>
+        <div id="aPhotoList"></div>
+      </div>
+
+      <!-- Video Management -->
+      <div id="aVideoTab" style="display:none;">
+        <label class="admin-label">Video Title</label>
+        <input class="admin-input" id="nVTitle" type="text" placeholder="e.g. Cultural Night Highlights" />
+        <label class="admin-label">
+          Video path (.mp4)
+          <!-- Save to /static/gallery/videos/filename.mp4 and enter path here -->
+        </label>
+        <input class="admin-input" id="nVSrc" type="text" placeholder="/static/gallery/videos/video.mp4" />
+        <label class="admin-label">Thumbnail path (optional)</label>
+        <input class="admin-input" id="nVPoster" type="text" placeholder="/static/gallery/thumbs/thumb.jpg" />
+        <button class="admin-btn" onclick="addVideo()" style="margin-bottom:1rem;">Add Video</button>
+        <div id="aVideoList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox (photo fullscreen view) -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&#x2715;</button>
+  <img id="lbImg" src="" alt="" />
+</div>
+
+<!-- ═══════════════════════════════════
+     FOOTER
+═══════════════════════════════════ -->
+<footer>
+  <div>
+    <div class="footer-logo">AAYAM 2026</div>
+    <div style="margin-top:4px;">Official Event Portal &middot; Karnavati University</div>
+  </div>
+  <div class="footer-links">
+    <a href="#events">Events</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#comments">Feedback</a>
+  </div>
+  <div style="text-align:right;">
+    &copy; 2026 Karnavati University<br>Built on Google Cloud Platform &#9729;
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════ -->
+<script>
+
+/* ─── SPLASH SCREEN ─── */
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('splash').classList.add('hidden'), 2100);
+});
+
+/* ─── THEME TOGGLE ─── */
+function toggleTheme() {
+  const html = document.documentElement;
+  const nowDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', nowDark ? 'light' : 'dark');
+  document.getElementById('themeBtn').textContent = nowDark ? '🌙' : '☀️';
+  localStorage.setItem('aayam-theme', nowDark ? 'light' : 'dark');
+}
+(function restoreTheme() {
+  const t = localStorage.getItem('aayam-theme');
+  if (t === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('themeBtn').textContent = '☀️';
+  }
+})();
+
+/* ─── EVENTS DATA ───
+   To add event poster images:
+   1. Save images to /static/events/ (e.g. techfest.jpg)
+   2. Change img: '' to img: '/static/events/techfest.jpg'
+   3. Leave img: '' to show emoji fallback
+*/
+const events = [
+  { id:1, category:'tech',     label:'Tech',      emoji:'💻', bg:'#e8f0fb', img:'/static/events/Ariaro 2026_main gate-01.jpg', /* ← /static/events/techfest.jpg */
+    name:'Tech Fest 2026',          date:'March 15, 2026 · 10:00 AM', venue:'Main Auditorium',    seats:54,  totalSeats:200, color:'#1a6dd4',
+    desc:'A full-day celebration of technology with hackathons, project exhibitions, and keynote talks from industry leaders.' },
+  { id:2, category:'cultural', label:'Cultural',  emoji:'🎭', bg:'#fdf0ea', img:'/static/events/Screenshot 2026-04-06 230807.png', /* ← /static/events/cultural.jpg */
+    name:'Cultural Night 2026',     date:'March 22, 2026 · 6:00 PM',  venue:'Open Air Theatre',   seats:120, totalSeats:300, color:'#d4521a',
+    desc:'An evening of music, dance, drama, and art showcasing the vibrant cultural diversity of our campus community.' },
+  { id:3, category:'workshop', label:'Workshop',  emoji:'☁️', bg:'#eaf5f7', img:'/static/events/20260320_170444.jpg', /* ← /static/events/cloud.jpg */
+    name:'Cloud Computing 101',     date:'March 28, 2026 · 2:00 PM',  venue:'Lab Block B',        seats:18,  totalSeats:40,  color:'#0f7b8c',
+    desc:'Hands-on workshop introducing Google Cloud Platform services, serverless architecture, and cloud-native development.' },
+  { id:4, category:'tech',     label:'Tech',      emoji:'🤖', bg:'#f0ebfb', img:'static/events/Ariaro 2026_1920x1080-03.jpg', /* ← /static/events/aiml.jpg */
+    name:'AI & ML Summit',          date:'April 5, 2026 · 11:00 AM',  venue:'Seminar Hall 2',     seats:35,  totalSeats:100, color:'#7c3aed',
+    desc:'Explore the frontiers of Artificial Intelligence and Machine Learning with live demos, panels, and project showcases.' },
+  { id:5, category:'cultural', label:'Cultural',  emoji:'🎨', bg:'#fff8e8', img:'/static/events/Screenshot 2026-04-06 231740.png', /* ← /static/events/artexpo.jpg */
+    name:'Art & Design Expo',       date:'April 10, 2026 · 12:00 PM', venue:'Gallery Hall',       seats:80,  totalSeats:150, color:'#c9a227',
+    desc:'An exhibition of student artwork, graphic design, photography and digital art across a vibrant gallery space.' },
+  { id:6, category:'workshop', label:'Workshop',  emoji:'🔐', bg:'#fbeaed', img:'/static/events/Screenshot 2026-04-06 231913.png', /* ← /static/events/cyber.jpg */
+    name:'Cybersecurity Workshop',  date:'April 18, 2026 · 3:00 PM',  venue:'Computer Lab 1',     seats:8,   totalSeats:30,  color:'#c0304a',
+    desc:'Learn ethical hacking basics, network security, and how to build secure applications from certified professionals.' },
+];
+
+let currentEvent = null, currentFilter = 'all';
+
+function renderEvents(filter) {
+  const grid = document.getElementById('eventsGrid');
+  const list = filter === 'all' ? events : events.filter(e => e.category === filter);
+  grid.innerHTML = list.map((e, i) => `
+    <div class="event-card card-anim" style="animation-delay:${i*0.07}s" onclick="openModal(${e.id})">
+      <div class="event-thumb" style="background:${e.bg}">
+        ${e.img ? `<img src="${e.img}" alt="${e.name}" />` : `<span style="z-index:2;font-size:3rem;">${e.emoji}</span>`}
+      </div>
+      <div class="event-body">
+        <div class="event-category" style="color:${e.color}">${e.label}</div>
+        <div class="event-name">${e.name}</div>
+        <div class="event-info">📅 ${e.date}<br>📍 ${e.venue}</div>
+        <div class="event-footer">
+          <div class="event-seats"><strong style="color:${e.seats<20?'#c0304a':'var(--ink)'}">${e.seats}</strong> seats left</div>
+          <button class="register-btn" style="background:${e.color}">Register</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function filterEvents(cat, btn) {
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = cat;
+  renderEvents(cat);
+}
+
+/* ─── REGISTRATION MODAL ─── */
+function openModal(id) {
+  currentEvent = events.find(e => e.id === id);
+  document.getElementById('modalTag').style.color = currentEvent.color;
+  document.getElementById('modalTag').textContent = currentEvent.label.toUpperCase() + ' EVENT';
+  document.getElementById('modalTitle').textContent = currentEvent.name;
+  document.getElementById('modalDesc').textContent = currentEvent.desc;
+  document.getElementById('eventField').value = currentEvent.name;
+  document.getElementById('formSection').style.display = 'block';
+  document.getElementById('successSection').style.display = 'none';
+  ['firstName','lastName','email','rollno','phone','notes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('year').value = '';
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(e) { if (e.target === document.getElementById('modalOverlay')) closeModalDirect(); }
+function closeModalDirect() { document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+
+function submitForm() {
+  const first = document.getElementById('firstName').value;
+  const last = document.getElementById('lastName').value;
+  const email = document.getElementById('email').value;
+  const roll = document.getElementById('rollno').value;
+  const year = document.getElementById('year').value;
+  const phone = document.getElementById('phone').value;
+  const notes = document.getElementById('notes').value;
+  const event = document.getElementById('eventField').value;
+
+  // ✅ Validation
+  if (!first || !last || !email || !roll || !year || !phone) {
+    alert("Please fill all required fields");
+    return;
+  }
+
+  // 🔥 SEND FULL DATA TO BACKEND
+  fetch("/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: new URLSearchParams({
+      first_name: first,
+      last_name: last,
+      email: email,
+      roll_number: roll,
+      year: year,
+      phone: phone,
+      notes: notes,
+      event_name: event
+    })
+  })
+  .then(res => res.text())
+.then(data => {
+  if (data === "OK") {
+    // ✅ Show success screen instead of alert
+    document.getElementById('formSection').style.display = 'none';
+    document.getElementById('successSection').style.display = 'block';
+
+    document.getElementById('regCard').innerHTML = `
+      <div class="reg-card-row"><span>Name</span><span>${first} ${last}</span></div>
+      <div class="reg-card-row"><span>Email</span><span>${email}</span></div>
+      <div class="reg-card-row"><span>Roll No</span><span>${roll}</span></div>
+      <div class="reg-card-row"><span>Year</span><span>${year}</span></div>
+      <div class="reg-card-row"><span>Phone</span><span>${phone}</span></div>
+      <div class="reg-card-row"><span>Event</span><span>${event}</span></div>
+    `;
+    } else {
+    alert("Error saving data");
+  }
+})
+}
+/* ─── GALLERY ───
+   Admin adds via admin panel. Students only view.
+   Stored in localStorage for prototype (connect to Flask in production).
+*/
+let photos = JSON.parse(localStorage.getItem('aayam-photos') || '[]');
+let videos = JSON.parse(localStorage.getItem('aayam-videos') || '[]');
+
+function renderGallery() {
+  const pg = document.getElementById('photoGrid');
+  const vg = document.getElementById('videoGrid');
+  pg.innerHTML = photos.length
+    ? photos.map((p,i) => `
+        <div class="photo-item" onclick="openLightbox('${p.src}','${p.caption}')">
+          <img src="${p.src}" alt="${p.caption}" onerror="this.parentElement.style.background='var(--cream)'" />
+          <div class="photo-caption">${p.caption}</div>
+        </div>`).join('')
+    : `<div style="grid-column:1/-1;text-align:center;padding:3rem 1rem;color:var(--muted);">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem;">📷</div>
+        <div style="font-weight:500;margin-bottom:4px;">No photos yet</div>
+        <div style="font-size:0.78rem;">The AAYAM admin team will upload photos here after each event.</div>
+       </div>`;
+  vg.innerHTML = videos.length
+    ? videos.map((v,i) => `
+        <div class="video-item">
+          <div class="video-thumb">
+            <video controls preload="none" ${v.poster?`poster="${v.poster}"`:''}
+                   style="width:100%;height:100%;object-fit:cover;">
+              <source src="${v.src}" type="video/mp4">Your browser doesn't support video.
+            </video>
+          </div>
+          <div class="video-info">
+            <div class="video-title">${v.title}</div>
+            <div class="video-meta">AAYAM 2026 · Karnavati University</div>
+          </div>
+        </div>`).join('')
+    : `<div style="grid-column:1/-1;text-align:center;padding:3rem 1rem;color:var(--muted);background:var(--cream);border-radius:12px;">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem;">🎬</div>
+        <div style="font-weight:500;margin-bottom:4px;">No videos yet</div>
+        <div style="font-size:0.78rem;">Event highlight reels will be added here by the admin team.</div>
+       </div>`;
+}
+
+function switchGTab(tab, btn) {
+  document.querySelectorAll('.gtab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('photoGrid').classList.toggle('active', tab === 'photos');
+  document.getElementById('videoGrid').classList.toggle('active', tab === 'videos');
+}
+
+function openLightbox(src, alt) {
+  document.getElementById('lbImg').src = src;
+  document.getElementById('lbImg').alt = alt;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+/* ─── ADMIN PANEL ─── */
+const ADMIN_PWD = 'aayam2026'; /* Change this in app.py for production */
+
+function openAdminModal() {
+  document.getElementById('adminOverlay').classList.add('open');
+  document.getElementById('adminLogin').classList.add('active');
+  document.getElementById('adminPanel').classList.remove('active');
+  document.getElementById('adminErr').style.display = 'none';
+  document.getElementById('adminPass').value = '';
+}
+function closeAdminModal(e) { if (e.target === document.getElementById('adminOverlay')) closeAdminModalDirect(); }
+function closeAdminModalDirect() { document.getElementById('adminOverlay').classList.remove('open'); }
+
+function checkPass() {
+  if (document.getElementById('adminPass').value === ADMIN_PWD) {
+    document.getElementById('adminLogin').classList.remove('active');
+    document.getElementById('adminPanel').classList.add('active');
+    renderAdminLists();
+  } else {
+    document.getElementById('adminErr').style.display = 'block';
+  }
+}
+
+function switchAdminTab(tab, btn) {
+  document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('aPhotoTab').style.display = tab === 'photos' ? 'block' : 'none';
+  document.getElementById('aVideoTab').style.display = tab === 'videos' ? 'block' : 'none';
+}
+
+function addPhoto() {
+  const src     = document.getElementById('nPhotoSrc').value.trim();
+  const caption = document.getElementById('nCaption').value.trim();
+  if (!src) { alert('Please enter an image path.'); return; }
+  photos.push({ src, caption: caption || 'AAYAM 2026' });
+  localStorage.setItem('aayam-photos', JSON.stringify(photos));
+  document.getElementById('nPhotoSrc').value = '';
+  document.getElementById('nCaption').value = '';
+  renderAdminLists(); renderGallery();
+}
+
+function addVideo() {
+  const src    = document.getElementById('nVSrc').value.trim();
+  const title  = document.getElementById('nVTitle').value.trim();
+  const poster = document.getElementById('nVPoster').value.trim();
+  if (!src) { alert('Please enter a video file path.'); return; }
+  videos.push({ src, title: title || 'AAYAM 2026 Video', poster });
+  localStorage.setItem('aayam-videos', JSON.stringify(videos));
+  document.getElementById('nVSrc').value = '';
+  document.getElementById('nVTitle').value = '';
+  document.getElementById('nVPoster').value = '';
+  renderAdminLists(); renderGallery();
+}
+
+function removePhoto(i) { photos.splice(i,1); localStorage.setItem('aayam-photos', JSON.stringify(photos)); renderAdminLists(); renderGallery(); }
+function removeVideo(i) { videos.splice(i,1); localStorage.setItem('aayam-videos', JSON.stringify(videos)); renderAdminLists(); renderGallery(); }
+
+function renderAdminLists() {
+  document.getElementById('aPhotoList').innerHTML = photos.length
+    ? photos.map((p,i) => `<div class="admin-list-item"><span>${p.caption}</span><button class="admin-remove" onclick="removePhoto(${i})">Remove</button></div>`).join('')
+    : `<div style="font-size:0.78rem;color:var(--muted);padding:8px 0;">No photos added yet.</div>`;
+  document.getElementById('aVideoList').innerHTML = videos.length
+    ? videos.map((v,i) => `<div class="admin-list-item"><span>${v.title}</span><button class="admin-remove" onclick="removeVideo(${i})">Remove</button></div>`).join('')
+    : `<div style="font-size:0.78rem;color:var(--muted);padding:8px 0;">No videos added yet.</div>`;
+}
+
+/* ─── INIT ─── */
+renderEvents('all');
+renderGallery();
+</script>
+</body>
+</html>
